@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Numerología</title>
+    <style>
+        body {
+            font-family:'Times New Roman', Times, serif;
+            background-image: url('fondo.jpg'); /* URL de mi fondo */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #278ad1;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #28a792;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #21d0ef;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #37d3fe;
+            transform: translateY(-2px);
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            min-height: 60px; /* Para mantener espacio en caso de que no haya resultado */
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Numerología</h1>
+        
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Introduce tu nombre" required>
+        
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" placeholder="Introduce tu apellido" required>
+        
+        <label for="fechaNacimiento">Fecha de Nacimiento (DD/MM/AAAA):</label>
+        <input type="text" id="fechaNacimiento" placeholder="Ej: 01/01/2000" required>
+        
+        <button id="calcularBtn">Calcular</button>
+        
+        <h2 id="resultado"></h2>
+        <footer>© 2025 Numerología App</footer>
+    </div>
+
+    <script>
+        const calcularBtn = document.getElementById('calcularBtn');
+        const nombreInput = document.getElementById('nombre');
+        const apellidoInput = document.getElementById('apellido');
+        const fechaNacimientoInput = document.getElementById('fechaNacimiento');
+        const resultado = document.getElementById('resultado');
+
+        function updateResult() {
+            const nombre = nombreInput.value;
+            const apellido = apellidoInput.value;
+            const fechaNacimiento = fechaNacimientoInput.value;
+            const numerologia = calcularNumerologia(fechaNacimiento);
+            const personalidadYConsejo = obtenerPersonalidadYConsejo(numerologia);
+
+            if (nombre && apellido) {
+                resultado.innerText = `Hola ${nombre} ${apellido}, tu número de numerología es ${numerologia}. ${personalidadYConsejo.personalidad} Consejo: ${personalidadYConsejo.consejo}`;
+            } else {
+                resultado.innerText = '';
+            }
+        }
+
+        calcularBtn.addEventListener('click', updateResult);
+
+        function calcularNumerologia(fecha) {
+            const soloNumeros = fecha.replace(/\D/g, '');
+            let suma = 0;
+
+            for (let i = 0; i < soloNumeros.length; i++) {
+                suma += parseInt(soloNumeros.charAt(i), 10);
+            }
+
+            while (suma > 9) {
+                suma = suma.toString().split('').reduce((acc, curr) => acc + parseInt(curr, 10), 0);
+            }
+
+            return suma;
+        }
+
+        function obtenerPersonalidadYConsejo(numero) {
+            const descripciones = {
+                1: {
+                    personalidad: "Eres un líder natural, independiente y ambicioso.",
+                    consejo: "Confía en tus instintos y no temas tomar la iniciativa."
+                },
+                2: {
+                    personalidad: "Eres diplomático, sensible y cooperativo.",
+                    consejo: "Busca la armonía en tus relaciones y escucha a los demás."
+                },
+                3: {
+                    personalidad: "Eres creativo, expresivo y optimista.",
+                    consejo: "Deja que tu creatividad brille y comparte tus ideas."
+                },
+                4: {
+                    personalidad: "Eres práctico, organizado y trabajador.",
+                    consejo: "Mantén tus metas claras y trabaja con determinación."
+                },
+                5: {
+                    personalidad: "Eres aventurero, curioso y adaptable.",
+                    consejo: "No temas explorar nuevas oportunidades y experiencias."
+                },
+                6: {
+                    personalidad: "Eres responsable, protector y amoroso.",
+                    consejo: "Dedica tiempo a cuidar de ti mismo y de los que amas."
+                },
+                7: {
+                    personalidad: "Eres introspectivo, analítico y espiritual.",
+                    consejo: "Busca momentos de reflexión y conexión interior."
+                },
+                8: {
+                    personalidad: "Eres poderoso, decidido y exitoso.",
+                    consejo: "Usa tu ambición para lograr tus metas, pero no olvides la ética."
+                },
+                9: {
+                    personalidad: "Eres humanitario, compasivo y generoso.",
+                    consejo: "Usa tu empatía para ayudar a otros y hacer del mundo un lugar mejor."
+                }
+            };
+
+            return descripciones[numero] || { personalidad: "Número desconocido.", consejo: "Reflexiona sobre tus acciones." };
+        }
+    </script>
+</body>
+</html>
+
+
+
+
